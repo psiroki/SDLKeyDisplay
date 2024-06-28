@@ -13,6 +13,32 @@ const int TYPE_KEY = 0 << 16;
 const int TYPE_BUTTON = 1 << 16;
 const int TYPE_HAT = 2 << 16;
 
+void printAvailableVideoModes() {
+  SDL_Rect **modes;
+  int i;
+
+  // Get available fullscreen/hardware modes
+  modes = SDL_ListModes(nullptr, SDL_FULLSCREEN | SDL_HWSURFACE);
+
+  // Check if there are any modes available
+  if (!modes) {
+    std::cout << "No modes available!" << std::endl;
+    return;
+  }
+
+  // Check if our resolution is restricted
+  if (modes == reinterpret_cast<SDL_Rect**>(-1)) {
+    std::cout << "All resolutions available." << std::endl;
+    return;
+  }
+
+  // Print available modes
+  std::cout << "Available video modes:" << std::endl;
+  for (i = 0; modes[i]; ++i) {
+    std::cout << modes[i]->w << "x" << modes[i]->h << std::endl;
+  }
+}
+
 void displayString(const char *text, float progress) {
   SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
 
@@ -81,6 +107,9 @@ int main(int argc, char* argv[]) {
     perror("Cannot initialize SDL");
     return 1;
   }
+  
+  printAvailableVideoModes();
+  
   SDL_JoystickEventState(SDL_ENABLE);
   SDL_Joystick *joy = SDL_JoystickOpen(0);
 
