@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.8)
 project(SDLKeyDisplay)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -10,11 +10,15 @@ find_package(SDL_ttf REQUIRED)
 
 include_directories(${SDL_INCLUDE_DIR} ${SDL_TTF_INCLUDE_DIR})
 
-# Add a FLIP option
 option(FLIP "Flip the display content 180 degrees" OFF)
+option(PORTRAIT "Portrait orientation mode" OFF)
 
 if(FLIP)
     add_definitions(-DFLIP)
+endif()
+
+if(PORTRAIT)
+    add_definitions(-DPORTRAIT)
 endif()
 
 add_executable(SDLKeyDisplay main.cpp)
